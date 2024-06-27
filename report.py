@@ -1,4 +1,5 @@
 import shelve
+import sys
 from moralis import evm_api
 import json
 from dotenv import load_dotenv
@@ -69,7 +70,11 @@ load_dotenv()
 price_usd = EthereumHistoricPrice("usd")
 trade = TradesData()
 
-with open('vault-activity.json', 'r') as file:
+# get filename from command line argument, if not provided, use default
+filename = sys.argv[1] if len(sys.argv) > 1 else 'vault-activity.json'
+
+
+with open(filename, 'r') as file:
     data = json.load(file)
 
 def get_part_before_slash(s):
