@@ -1,0 +1,5 @@
+﻿"Symbol","Name","DACS Sector","DACS Industry Group","DACS Industry","Weight"
+"dai","Dai","Stablecoin","Crypto-Backed Stablecoin","Crypto-Backed Stablecoin","3.58040317022167"
+"pyusd","PayPal Stablecoin","Stablecoin","Fiat-Backed Stablecoin","Fiat-Backed Stablecoin","0.20258783580866946"
+"usdc","USDC","Stablecoin","Fiat-Backed Stablecoin","Fiat-Backed Stablecoin","22.331942407927237"
+"usdt","Tether","Stablecoin","Fiat-Backed Stablecoin","Fiat-Backed Stablecoin","73.88506658604241"
