@@ -3,6 +3,8 @@ env/
 prices.db
 trades.db
 vault-activity.json
+report/
+input/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

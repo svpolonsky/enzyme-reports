@@ -158,5 +158,5 @@ def report_inclass_allocations(index_csv, assets, class_name='Native Coins'):
     # df['A'] = df['A'].map('{:.2f}'.format)
     print(inclass_assets.to_string(index=False))
 
-report_inclass_allocations('Constituents - CoinDesk Large Cap Select Index.csv', assets, 'Native Coins')
-report_inclass_allocations('Constituents - CoinDesk Stablecoin Index.csv', assets, 'Stable Coins')
+report_inclass_allocations('input/Constituents - CoinDesk Large Cap Select Index.csv', assets, 'Native Coins')
+report_inclass_allocations('input/Constituents - CoinDesk Stablecoin Index.csv', assets, 'Stable Coins')
