@@ -34,8 +34,22 @@ You can get free API keys from corresponding API providers
 python query-enzyme.py > vault-activity.json
 ```
 
-## Run Python script to generate report
+## Run Python scripts to generate LaTeX table for the report
+
+### Transaction expenses
 
 ```sh
-python report.py vault-activity.json
+python ./report-expenses.py vault-activity.json
+```
+
+### Asset allocation
+
+```sh
+python ./report-asset-allocation.py
+```
+
+### Fund performance
+
+```sh
+python ./report-performance.py
 ```

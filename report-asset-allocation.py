@@ -84,6 +84,23 @@ def table_to_pdf(df, filename):
         pdf.savefig(fig, bbox_inches='tight')
         plt.close()
 
+
+def table_to_latex(df, filename, caption, label):
+    latex_table = df.to_latex(
+        index=False,
+        float_format="%.2f")
+    latex_table = f""" 
+\\begin{{table}}[h] 
+\\centering 
+{latex_table} 
+\\caption{{{caption}}} 
+\\label{{tab:{label}}} 
+\\end{{table}} 
+"""
+    with open(filename, 'w') as f:
+        f.write(latex_table)
+
+
 assets_by_class = assets_by_class.round(2) 
 # sort the values by the 'Percentage' column
 assets_by_class = assets_by_class.sort_values(by='Reference', ascending=False)
@@ -92,6 +109,7 @@ c = assets_by_class.copy(deep=True)
 c = c.reset_index()
 print(c)
 table_to_pdf(c, 'report/assets_by_class.pdf')
+table_to_latex(c, 'report/assets_by_class.tex',caption='Asset allocation by class', label='assets-by-class')
 
 def report_inclass_allocations(index_csv, assets, class_name, total):
     print(f'\nInclass allocations for {class_name}:')
