@@ -16,7 +16,7 @@ def normalize_date(datetime_str):
 
 class EthereumHistoricPrice:
     def __init__(self, currency="usd"):
-        self.db = shelve.open("prices.db", writeback=True) 
+        self.db = shelve.open("prices", writeback=True) 
         self.currency = currency
         self.api_key = os.getenv('COINGECKO_API_KEY')
 
@@ -43,7 +43,7 @@ class EthereumHistoricPrice:
     
 class TradesData:
     def __init__(self):
-        self.db = shelve.open("trades.db") 
+        self.db = shelve.open("trades") 
         self.api_key = os.getenv('MORALIS_API_KEY')
 
     def __del__(self):

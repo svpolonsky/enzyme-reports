@@ -33,7 +33,7 @@ data = {
     "currency": "CURRENCY_UNSPECIFIED",  # Currency in which to receive the data
     "range": {
         "from": "2024-05-01T00:00:00Z",  # Start date in ISO 8601 format
-        "to": "2024-06-28T00:00:00Z"  # End date in ISO 8601 format
+        "to": "2024-07-11T00:00:00Z"  # End date in ISO 8601 format
     },
     "resolution": "RESOLUTION_ONE_DAY"  #
 }
@@ -43,7 +43,7 @@ data = {
 response = requests.post(url, headers=headers, data=json.dumps(data))
 
 # pretty print the response's json
-print(json.dumps(response.json(), indent=2))
+# print(json.dumps(response.json(), indent=2))
 
 # convert json to pandas dataframe
 
@@ -58,9 +58,16 @@ df = pd.json_normalize(response.json()['items'])
 # Convert 'timestamp' to datetime
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
-print(df)
+# print(df)
 
 import matplotlib.pyplot as plt
+
+# Directory where the plot will be saved
+output_dir = './report'
+
+# Create the directory if it doesn't exist
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
 # Plotting
 
@@ -73,9 +80,8 @@ plt.grid(True)  # Turn on the grid
 plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
 plt.tight_layout()  # Automatically adjust subplot parameters to give specified padding
 # plt.show()
-plt.savefig('./report/performance_plot.png')
-
-
+output_path = os.path.join(output_dir, 'performance_plot.png')
+plt.savefig(output_path)
 
 # add plot for grossAssetValue
 plt.figure(figsize=(10, 5))  # Set the figure size (optional)
@@ -87,5 +93,10 @@ plt.grid(True)  # Turn on the grid
 plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
 plt.tight_layout()  # Automatically adjust subplot parameters to give specified padding
 # plt.show()
-plt.savefig('./report/gross_asset_value_plot.png')
+
+output_path = os.path.join(output_dir, 'gross_asset_value_plot.png')
+plt.savefig(output_path)
+
+
+# plt.savefig('./report/gross_asset_value_plot.png')
 
