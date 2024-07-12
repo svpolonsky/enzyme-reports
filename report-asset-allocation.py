@@ -111,6 +111,10 @@ print(c)
 table_to_pdf(c, 'report/assets_by_class.pdf')
 table_to_latex(c, 'report/assets_by_class.tex',caption='Asset allocation by class', label='assets-by-class')
 
+# function to replace blanks with '-'
+def replace_blanks(s):
+    return s.replace(' ', '-')
+
 def report_inclass_allocations(index_csv, assets, class_name, total):
     print(f'\nInclass allocations for {class_name}:')
     # keep rows with Asset Class = class_name
@@ -130,6 +134,8 @@ def report_inclass_allocations(index_csv, assets, class_name, total):
     inclass_assets.rename(columns={'Weight': 'Reference'}, inplace=True)
     inclass_assets.sort_values(by='Percentage', ascending=False, inplace=True)
     print(inclass_assets.to_string(index=False))
+    classname = replace_blanks(class_name)
+    table_to_latex(inclass_assets, f'report/inclass-{classname}.tex',caption=f'In-class asset allocation for {class_name}', label=f'inclass-allocation-{classname}')
 
 report_inclass_allocations('input/Constituents - CoinDesk Large Cap Select Index.csv', assets, 'Native Coins', assets_by_class["value"]["Native Coins"])
 report_inclass_allocations('input/Constituents - CoinDesk Stablecoin Index.csv', assets, 'Stable Coins', assets_by_class["value"]["Stable Coins"])

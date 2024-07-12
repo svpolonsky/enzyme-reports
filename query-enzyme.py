@@ -7,6 +7,7 @@ import os
 
 load_dotenv()
 
+
 # URL for the request
 url = "https://api.enzyme.finance/enzyme.enzyme.v1.EnzymeService/GetVaultActivities"
 

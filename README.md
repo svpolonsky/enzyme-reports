@@ -17,6 +17,12 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
+To save the list of dependencies
+
+```sh
+pip freeze > requirements.txt
+```
+
 ### Add API keys to your `.env` file
 
 ```txt
