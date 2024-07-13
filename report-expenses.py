@@ -7,7 +7,9 @@ import os
 import time
 from datetime import datetime
 import requests
-from prettytable import PrettyTable
+# from prettytable import PrettyTable
+import pandas as pd
+from utils.latex import pandas_to_latex
 
 def normalize_date(datetime_str):
     datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%dT%H:%M:%S.%fZ')
@@ -83,24 +85,55 @@ def get_part_before_slash(s):
 
 
 # Create a table object
-table = PrettyTable()
-table.field_names = ["Date", "Fee (USD)"]
+# table = PrettyTable()
+# table.field_names = ["Date", "Fee (USD)"]
 
-def trade_fee(transaction_hash,table):
+
+def trade_fee(transaction_hash):
     t = trade.qet(transaction_hash)
     fee_eth = float(t["transaction_fee"])
     block_date = normalize_date(t["block_timestamp"])
     eth_price = price_usd.quote(block_date)
     fee_usd = fee_eth * eth_price
     print(f'Date  {block_date} Fee (USD): {fee_usd}' )
-    table.add_row([block_date, "{:.2f}".format(fee_usd)])
+    return block_date, fee_usd
     
+ 
+dict = {
+    "Date": [],
+    "Fee": []
+}   
+
 for activity in data['vaultActivities']:
     if 'trade' in activity:
         transaction_hash = get_part_before_slash(activity['trade']['id'])
         print(f'Trade {transaction_hash}')
-        trade_fee(transaction_hash, table)
+        d, f = trade_fee(transaction_hash)
+        print(d, f)
+        dict["Date"].append(d) 
+        dict["Fee"].append(f)
 
-print(table)
+# print(table)
+df = pd.DataFrame(dict)
+print(df)
 
-    
+# Convert the Date column to datetime format
+df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
+
+# Extract year and month from the Date column
+df['YearMonth'] = df['Date'].dt.to_period('M')
+
+# Group by the new YearMonth column and sum the Fee column
+monthly_fees = df.groupby('YearMonth')['Fee'].sum().reset_index()
+# Round the Fee column to 2 decimal places
+monthly_fees['Fee'] = monthly_fees['Fee'].round(2)
+# Display the aggregated DataFrame
+print(monthly_fees)    
+
+# Export to LaTeX
+
+pandas_to_latex(
+    monthly_fees, 
+    './report/monthly-fees.tex', 
+    caption = 'Транзакционные расходы', 
+    label = 'monthly-fees')

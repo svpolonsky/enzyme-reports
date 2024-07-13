@@ -84,21 +84,21 @@ def table_to_pdf(df, filename):
         pdf.savefig(fig, bbox_inches='tight')
         plt.close()
 
-
-def table_to_latex(df, filename, caption, label):
-    latex_table = df.to_latex(
-        index=False,
-        float_format="%.2f")
-    latex_table = f""" 
-\\begin{{table}}[h] 
-\\centering 
-{latex_table} 
-\\caption{{{caption}}} 
-\\label{{tab:{label}}} 
-\\end{{table}} 
-"""
-    with open(filename, 'w') as f:
-        f.write(latex_table)
+from utils.latex import pandas_to_latex
+# def table_to_latex(df, filename, caption, label):
+#     latex_table = df.to_latex(
+#         index=False,
+#         float_format="%.2f")
+#     latex_table = f""" 
+# \\begin{{table}}[h] 
+# \\centering 
+# {latex_table} 
+# \\caption{{{caption}}} 
+# \\label{{tab:{label}}} 
+# \\end{{table}} 
+# """
+#     with open(filename, 'w') as f:
+#         f.write(latex_table)
 
 
 assets_by_class = assets_by_class.round(2) 
@@ -109,7 +109,7 @@ c = assets_by_class.copy(deep=True)
 c = c.reset_index()
 print(c)
 table_to_pdf(c, 'report/assets_by_class.pdf')
-table_to_latex(c, 'report/assets_by_class.tex',caption='Asset allocation by class', label='assets-by-class')
+pandas_to_latex(c, 'report/assets-by-class.tex',caption='Распределение активов по классам', label='assets-by-class')
 
 # function to replace blanks with '-'
 def replace_blanks(s):
@@ -135,7 +135,9 @@ def report_inclass_allocations(index_csv, assets, class_name, total):
     inclass_assets.sort_values(by='Percentage', ascending=False, inplace=True)
     print(inclass_assets.to_string(index=False))
     classname = replace_blanks(class_name)
-    table_to_latex(inclass_assets, f'report/inclass-{classname}.tex',caption=f'In-class asset allocation for {class_name}', label=f'inclass-allocation-{classname}')
+    pandas_to_latex(inclass_assets, f'report/inclass-{classname}.tex',caption=f'Распределение активов в классе {class_name}', label=f'inclass-allocation-{classname}')
 
-report_inclass_allocations('input/Constituents - CoinDesk Large Cap Select Index.csv', assets, 'Native Coins', assets_by_class["value"]["Native Coins"])
-report_inclass_allocations('input/Constituents - CoinDesk Stablecoin Index.csv', assets, 'Stable Coins', assets_by_class["value"]["Stable Coins"])
+index_date='2024-07-13'
+print(f'using index data for {index_date}')
+report_inclass_allocations(f'index/{index_date}/Constituents - CoinDesk Large Cap Select Index.csv', assets, 'Native Coins', assets_by_class["value"]["Native Coins"])
+report_inclass_allocations(f'index/{index_date}/Constituents - CoinDesk Stablecoin Index.csv', assets, 'Stable Coins', assets_by_class["value"]["Stable Coins"])

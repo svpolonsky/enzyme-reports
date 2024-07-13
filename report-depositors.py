@@ -64,24 +64,10 @@ mapping_dict = {
 df['Metric'] = df['Metric'].replace(mapping_dict)
 df['Value'] = df['Value'].astype(int)
 
-
 print(df)
 
-def table_to_latex(df, filename, caption, label):
-    latex_table = df.to_latex(
-        index=False,
-        float_format="%.2f")
-    latex_table = f""" 
-\\begin{{table}}[h] 
-\\centering 
-{latex_table} 
-\\caption{{{caption}}} 
-\\label{{tab:{label}}} 
-\\end{{table}} 
-"""
-    with open(filename, 'w') as f:
-        f.write(latex_table)
+from utils.latex import pandas_to_latex
 
-table_to_latex(df, 'report/depositors.tex', caption = 'Основная информация о фонде', label = 'depositors')
+pandas_to_latex(df, 'report/depositors.tex', caption = 'Основная информация о фонде', label = 'depositors')
 
 
